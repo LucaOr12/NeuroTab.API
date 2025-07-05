@@ -13,7 +13,7 @@ public class Tab // container of thoughts
     public List<Content>? Content { get; set; }//the actual idea content
     public string? Url { get; set; }//optional to reference stuff
     public string? Description { get; set; }
-    public List<string> Tags { get; set; } = new List<string>();// ["topic", "genre", "creative", "urgent"]
+    public List<string> Tags { get; set; } = null!;// ["topic", "genre", "creative", "urgent"]
     public bool IsActive { get; set; } = true;
     
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

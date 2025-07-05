@@ -11,7 +11,7 @@ public class Content
     [StringLength(5000)]
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; }
-    public string? Url { get; set; }//optional to reference stuff
+    public string? Url { get; set; }//optional to reference links
     
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
