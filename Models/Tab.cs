@@ -10,7 +10,8 @@ public class Tab // container of thoughts
     [Required]
     [StringLength(500)]
     public string Title { get; set; } = string.Empty;
-    public List<Content>? Content { get; set; }//the actual idea content
+
+    public List<Content> Content { get; set; } = null!;//the actual idea content
     public string? Url { get; set; }//optional to reference stuff
     public string? Description { get; set; }
     public List<string> Tags { get; set; } = null!;// ["topic", "genre", "creative", "urgent"]
