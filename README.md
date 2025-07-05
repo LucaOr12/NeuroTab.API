@@ -2,7 +2,7 @@
 
 This is the **backend API** for [NeuroTab](https://github.com/LucaOr12/NeuroTab), a thinking workspace where thoughts live as interconnected tabs and AI assists your idea process.
 
-Built with **ASP.NET Core Web API** and **PostgreSQL**, with integrated AI features powered by OpenAI.
+Built with **ASP.NET Core Web API** and **PostgreSQL**, with integrated AI features powered by OpenRouter.
 
 ---
 
