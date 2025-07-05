@@ -8,10 +8,10 @@ using neurotab_api.Data;
 
 namespace neurotab_api.Controllers;
 
-public class TabController: ControllerBase
+public class ContentsController : ControllerBase
 {
     private readonly NeuroTabContext _context;
-    public TabController(NeuroTabContext context)
+    public ContentsController(NeuroTabContext context)
     {
         _context = context;
     }
