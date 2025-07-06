@@ -121,7 +121,17 @@ public class UsersController : ControllerBase
             return Unauthorized("Invalid Google token.");
         }
     }
+    
+    
+    [HttpPost("logout")]
+    public async Task<IActionResult> Logout()
+    {
+        await HttpContext.SignOutAsync("CookieAuth");
+        return Ok();
+    }
 }
+
+
 
 public class GoogleLoginRequest
 {
