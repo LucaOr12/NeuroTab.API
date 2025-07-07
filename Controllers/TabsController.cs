@@ -40,15 +40,37 @@ public class TabsController: ControllerBase
     [HttpPost]
     public async Task<ActionResult<Tab>> CreateTab([FromBody] Tab tab)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if(userId == null)
+        if (userId == null)
             return Unauthorized();
-        
+
         tab.UserId = Guid.Parse(userId);
+        tab.Id = Guid.NewGuid();
         tab.CreatedAt = DateTime.UtcNow;
         tab.UpdatedAt = DateTime.UtcNow;
+        
+        
+        if (tab.Content != null)
+        {
+            foreach (var content in tab.Content)
+            {
+                content.Id = Guid.NewGuid();
+                content.TabId = tab.Id;
+                content.CreatedAt = DateTime.UtcNow;
+                content.UpdatedAt = DateTime.UtcNow;
+            }
+        }
+        
+        tab.Tags ??= new List<string>();
+
         _context.Tabs.Add(tab);
         await _context.SaveChangesAsync();
+
         return Ok(tab);
     }
 }
