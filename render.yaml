@@ -3,6 +3,7 @@ services:
     name: neurotab-api
     env: docker
     plan: free
+    buildCommand: dotnet publish -c Release -o out
     region: frankfurt
     branch: main
     dockerfilePath: ./Dockerfile
