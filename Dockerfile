@@ -7,10 +7,10 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["neurotab-api/neurotab-api.csproj", "neurotab-api/"]
-RUN dotnet restore "neurotab-api/neurotab-api.csproj"
+COPY ["neurotab-api.csproj", "./"]
+RUN dotnet restore "./neurotab-api.csproj"
 COPY . .
-WORKDIR "/src/neurotab-api"
+WORKDIR "/src"
 RUN dotnet build "./neurotab-api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
