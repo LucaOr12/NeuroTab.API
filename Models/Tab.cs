@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace neurotab_api.Models;
 
@@ -21,6 +22,7 @@ public class Tab // container of thoughts
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     
     //Navigation Properties
+    [ValidateNever]
     public virtual User User { get; set; } = null!;
     public virtual ICollection<Connection> OutGoingConnections { get; set; } = new List<Connection>();
     public virtual ICollection<Connection> IncomingConnections { get; set; } = new List<Connection>();
