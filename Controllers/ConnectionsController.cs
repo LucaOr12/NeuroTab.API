@@ -9,6 +9,8 @@ using neurotab_api.Data;
 
 namespace neurotab_api.Controllers;
 
+[ApiController]
+[Route("api/[controller]")]
 public class ConnectionsController : ControllerBase
 {
     private readonly NeuroTabContext _context;
