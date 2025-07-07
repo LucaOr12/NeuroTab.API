@@ -3,7 +3,8 @@ services:
     name: neurotab-api
     env: docker
     plan: free
-    buildCommand: dotnet publish -c Release -o out
+    buildCommand: dotnet publish src/NeuroTabApi/NeuroTabApi.csproj -c Release -o out
+    startCommand: dotnet out/NeuroTabApi.dll
     region: frankfurt
     branch: main
     dockerfilePath: ./Dockerfile
