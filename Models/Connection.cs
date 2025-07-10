@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace neurotab_api.Models;
 
@@ -19,6 +20,8 @@ public class Connection
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     
     //Navigation Properties
+    [JsonIgnore]
     public virtual Content FromContent { get; set; } = null!;
+    [JsonIgnore]
     public virtual Content ToContent { get; set; } = null!;
 }
