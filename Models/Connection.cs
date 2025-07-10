@@ -9,7 +9,6 @@ public class Connection
     public Guid FromContentId { get; set; } //foreignKey
     public Guid ToContentId { get; set; } //foreignKey
     
-    [Required]
     [StringLength(50)]
     public string ConnectionType { get; set; } = string.Empty;// "builds_on", "contradicts", "similar_to", "leads_to"
 

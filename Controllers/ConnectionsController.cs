@@ -34,9 +34,14 @@ public class ConnectionsController : ControllerBase
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (userId == null)
             return Unauthorized();
-        
+
         if (!ModelState.IsValid)
-            return BadRequest(ModelState);
+        {
+            var errors = string.Join("; ", ModelState.Values
+                .SelectMany(x => x.Errors)
+                .Select(x => x.ErrorMessage));
+            return BadRequest("Model validation failed: " + errors);
+        }
         
         var fromExists = await _context.Contents.AnyAsync(c => c.Id == connection.FromContentId);
         var toExists = await _context.Contents.AnyAsync(c => c.Id == connection.ToContentId);
