@@ -46,6 +46,8 @@ public class ConnectionsController : ControllerBase
         var fromExists = await _context.Contents.AnyAsync(c => c.Id == connection.FromContentId);
         var toExists = await _context.Contents.AnyAsync(c => c.Id == connection.ToContentId);
 
+        Console.WriteLine($"FromContentId: {connection.FromContentId}");
+        Console.WriteLine($"ToContentId: {connection.ToContentId}");
         if (!fromExists || !toExists)
             return BadRequest("Invalid content IDs");
 
