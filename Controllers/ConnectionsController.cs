@@ -1,4 +1,5 @@
 
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,12 +21,20 @@ public class ConnectionsController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Connection>>> GetAll()
     {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (userId == null)
+            return Unauthorized();
+        
         return await _context.Connections.ToListAsync();
     }
 
     [HttpPost]
     public async Task<ActionResult<Connection>> Create([FromBody] Connection connection)
     {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (userId == null)
+            return Unauthorized();
+        
         var fromExists = await _context.Contents.AnyAsync(c => c.Id == connection.FromContentId);
         var toExists = await _context.Contents.AnyAsync(c => c.Id == connection.ToContentId);
 
@@ -44,6 +53,10 @@ public class ConnectionsController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(Guid id)
     {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (userId == null)
+            return Unauthorized();
+        
         var conn = await _context.Connections.FindAsync(id);
         if (conn == null) return NotFound();
 
