@@ -29,7 +29,7 @@ public class ConnectionsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Connection>> Create([FromBody] Connection connection)
+    public async Task<ActionResult<Connection>> Create([FromBody] ConnectionDTO dto)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (userId == null)
@@ -43,14 +43,22 @@ public class ConnectionsController : ControllerBase
             return BadRequest("Model validation failed: " + errors);
         }
         
-        var fromExists = await _context.Contents.AnyAsync(c => c.Id == connection.FromContentId);
-        var toExists = await _context.Contents.AnyAsync(c => c.Id == connection.ToContentId);
+        var fromExists = await _context.Contents.AnyAsync(c => c.Id == dto.FromContentId);
+        var toExists = await _context.Contents.AnyAsync(c => c.Id == dto.ToContentId);
         
         if (!fromExists || !toExists)
             return BadRequest("Invalid content IDs");
 
-        connection.Id = Guid.NewGuid();
-        connection.CreatedAt = DateTime.UtcNow;
+        var connection = new Connection
+        {
+            FromContentId = dto.FromContentId,
+            ToContentId = dto.ToContentId,
+            ConnectionType = dto.ConnectionType,
+            Strength = dto.Strength,
+            Notes = dto.Notes,
+            IsAiGenerated = dto.IsAiGenerated,
+            CreatedAt = DateTime.UtcNow
+        };
 
         _context.Connections.Add(connection);
         await _context.SaveChangesAsync();
@@ -80,4 +88,14 @@ public class ConnectionsController : ControllerBase
     {
         return Ok("pong");
     }
+}
+
+public class ConnectionDTO
+{
+    public Guid FromContentId { get; set; }
+    public Guid ToContentId { get; set; }
+    public string ConnectionType { get; set; } = string.Empty;
+    public int Strength { get; set; } = 1;
+    public string? Notes { get; set; }
+    public bool IsAiGenerated { get; set; }
 }
