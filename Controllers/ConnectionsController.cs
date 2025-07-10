@@ -35,6 +35,9 @@ public class ConnectionsController : ControllerBase
         if (userId == null)
             return Unauthorized();
         
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+        
         var fromExists = await _context.Contents.AnyAsync(c => c.Id == connection.FromContentId);
         var toExists = await _context.Contents.AnyAsync(c => c.Id == connection.ToContentId);
 
