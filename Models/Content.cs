@@ -13,6 +13,12 @@ public class Content
     public string Description { get; set; } = string.Empty;
     public string? Url { get; set; }//optional to reference links
     
+    //positions
+    [Required]
+    public float PositionX { get; set; } = 100;
+    [Required]
+    public float PositionY { get; set; } = 100;
+    
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     

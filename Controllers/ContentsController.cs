@@ -56,4 +56,26 @@ public class ContentsController : ControllerBase
 
         return Ok(content);
     }
+
+    [HttpPut("{id}/position")]
+    public async Task<IActionResult> UpdateNodePosition(Guid id, [FromBody] PositionDTO pos)
+    {
+        var content = await _context.Contents.FindAsync(id);
+        if (content == null)
+        {
+            return NotFound();
+        }
+
+        content.PositionX = pos.X;
+        content.PositionY = pos.Y;
+        
+        await _context.SaveChangesAsync();
+        return NoContent();
+    }
+}
+
+public class PositionDTO
+{
+    public float X { get; set; }
+    public float Y { get; set; }
 }
