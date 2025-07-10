@@ -6,8 +6,8 @@ public class Connection
 {
     public Guid Id { get; set; } = Guid.NewGuid();
     
-    public Guid FromTabId { get; set; } //foreignKey
-    public Guid ToTabId { get; set; } //foreignKey
+    public Guid FromContentId { get; set; } //foreignKey
+    public Guid ToContentId { get; set; } //foreignKey
     
     [Required]
     [StringLength(50)]
@@ -15,11 +15,11 @@ public class Connection
 
     public int Strength { get; set; } = 1;// 1-10, how strong the connection is
     public string? Notes { get; set; }
-    public bool IsAiGenerated { get; set; } = false;// Track if AI suggested this connection
+    public bool IsAiGenerated { get; set; }// Track if AI suggested this connection
     
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     
     //Navigation Properties
-    public virtual Tab FromTab { get; set; } = null!;
-    public virtual Tab ToTab { get; set; } = null!;
+    public virtual Content FromContent { get; set; } = null!;
+    public virtual Content ToContent { get; set; } = null!;
 }

@@ -22,4 +22,7 @@ public class Content
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     
+    
+    public virtual ICollection<Connection> OutGoingConnections { get; set; } = new List<Connection>();
+    public virtual ICollection<Connection> IncomingConnections { get; set; } = new List<Connection>();
 }

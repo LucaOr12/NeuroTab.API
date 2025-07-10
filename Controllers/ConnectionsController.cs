@@ -1,9 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using neurotab_api.Models;
 using neurotab_api.Data;
 
@@ -17,6 +15,42 @@ public class ConnectionsController : ControllerBase
     public ConnectionsController(NeuroTabContext context)
     {
         _context = context;
+    }
+    
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Connection>>> GetAll()
+    {
+        return await _context.Connections.ToListAsync();
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<Connection>> Create([FromBody] Connection connection)
+    {
+        var fromExists = await _context.Contents.AnyAsync(c => c.Id == connection.FromContentId);
+        var toExists = await _context.Contents.AnyAsync(c => c.Id == connection.ToContentId);
+
+        if (!fromExists || !toExists)
+            return BadRequest("Invalid content IDs");
+
+        connection.Id = Guid.NewGuid();
+        connection.CreatedAt = DateTime.UtcNow;
+
+        _context.Connections.Add(connection);
+        await _context.SaveChangesAsync();
+
+        return Ok(connection);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var conn = await _context.Connections.FindAsync(id);
+        if (conn == null) return NotFound();
+
+        _context.Connections.Remove(conn);
+        await _context.SaveChangesAsync();
+
+        return NoContent();
     }
     
     [HttpHead("ping")]

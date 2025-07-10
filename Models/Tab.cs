@@ -24,6 +24,4 @@ public class Tab // container of thoughts
     //Navigation Properties
     [ValidateNever]
     public virtual User User { get; set; } = null!;
-    public virtual ICollection<Connection> OutGoingConnections { get; set; } = new List<Connection>();
-    public virtual ICollection<Connection> IncomingConnections { get; set; } = new List<Connection>();
 }

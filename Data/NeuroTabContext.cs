@@ -17,15 +17,15 @@ public class NeuroTabContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Connection>()
-            .HasOne(c => c.FromTab)
+            .HasOne(c => c.FromContent)
             .WithMany(t => t.OutGoingConnections)
-            .HasForeignKey(c => c.FromTabId)
+            .HasForeignKey(c => c.FromContentId)
             .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Connection>()
-            .HasOne(c => c.ToTab)
+            .HasOne(c => c.ToContent)
             .WithMany(t => t.IncomingConnections)
-            .HasForeignKey(c => c.ToTabId)
+            .HasForeignKey(c => c.ToContentId)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }
