@@ -69,6 +69,29 @@ public class TabsController: ControllerBase
 
         return Ok(tab);
     }
+
+    [HttpPatch("update/{id}")]
+    public async Task<ActionResult<Tab>> UpdateTab(Guid id, [FromBody] Tab data)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (userId == null)
+            return Unauthorized();
+        
+        var existingTab = await _context.Tabs.FindAsync(id);
+        if (existingTab == null) return NotFound();
+        
+        existingTab.Title = data.Title ?? existingTab.Title;
+        existingTab.Description = data.Description ?? existingTab.Description;;
+        existingTab.UpdatedAt = DateTime.UtcNow ;
+        existingTab.Url = data.Url ?? existingTab.Url;
+        
+        await _context.SaveChangesAsync();
+        return Ok(existingTab);
+    }
     
     [HttpDelete("{id}")]
     public async Task<ActionResult<Tab>> DeleteTab(Guid id)
