@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -71,6 +67,20 @@ public class TabsController: ControllerBase
         _context.Tabs.Add(tab);
         await _context.SaveChangesAsync();
 
+        return Ok(tab);
+    }
+    
+    [HttpDelete("{id}")]
+    public async Task<ActionResult<Tab>> DeleteTab(Guid id)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (userId == null)
+            return Unauthorized();
+        
+        var tab = await _context.Tabs.FindAsync(id);
+        if (tab == null) return NotFound();
+        _context.Tabs.Remove(tab);
+        await _context.SaveChangesAsync();
         return Ok(tab);
     }
 }

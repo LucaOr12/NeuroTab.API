@@ -72,6 +72,19 @@ public class ContentsController : ControllerBase
         await _context.SaveChangesAsync();
         return NoContent();
     }
+    
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteContent(Guid id)
+    {
+        var content = await _context.Contents.FindAsync(id);
+        if (content == null)
+        {
+            return NotFound();
+        }
+        _context.Contents.Remove(content);
+        await _context.SaveChangesAsync();
+        return Ok(content);
+    }
 }
 
 public class PositionDTO
