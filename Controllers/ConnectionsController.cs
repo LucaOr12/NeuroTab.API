@@ -66,14 +66,14 @@ public class ConnectionsController : ControllerBase
         return Ok(connection);
     }
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(Guid id)
+    [HttpDelete("{fromContentId}/{toContentId}/")]
+    public async Task<IActionResult> Delete(Guid fromContentId, Guid toContentId)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (userId == null)
             return Unauthorized();
         
-        var conn = await _context.Connections.FindAsync(id);
+        var conn = await _context.Connections.FirstOrDefaultAsync(c => c.FromContentId == fromContentId && c.ToContentId == toContentId);
         if (conn == null) return NotFound();
 
         _context.Connections.Remove(conn);
