@@ -74,7 +74,7 @@ public class ContentsController : ControllerBase
     }
 
     [HttpPatch("update/{id}")]
-    public async Task<ActionResult<Content>> UpdateContent(Guid id, [FromBody] Content data)
+    public async Task<ActionResult<Content>> UpdateContent(Guid id, [FromBody] ContentDTO data)
     {
         if (!ModelState.IsValid)
         {
@@ -111,6 +111,13 @@ public class ContentsController : ControllerBase
         await _context.SaveChangesAsync();
         return Ok(content);
     }
+}
+
+public class ContentDTO
+{
+    public string Title { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
+    public string? Url { get; set; }
 }
 
 public class PositionDTO
