@@ -72,10 +72,36 @@ public class ContentsController : ControllerBase
         await _context.SaveChangesAsync();
         return NoContent();
     }
+
+    [HttpPatch("update/{id}")]
+    public async Task<ActionResult<Content>> UpdateContent(Guid id, [FromBody] Content data)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (userId == null)
+            return Unauthorized();
+        
+        var existingContent = await _context.Contents.FindAsync(id);
+        if (existingContent == null) return NotFound();
+        
+        existingContent.Title = data.Title ?? existingContent.Title;
+        existingContent.Description = data.Description ?? existingContent.Description;
+        existingContent.UpdatedAt = DateTime.UtcNow;
+        existingContent.Url = data.Url ?? existingContent.Url;
+        
+        await _context.SaveChangesAsync();
+        return Ok(existingContent);
+    }
     
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteContent(Guid id)
     {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if(userId == null)
+            return Unauthorized();
         var content = await _context.Contents.FindAsync(id);
         if (content == null)
         {
